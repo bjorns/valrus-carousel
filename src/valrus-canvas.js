@@ -11,7 +11,7 @@
 			switchPause: 5000, // millisecs between switch
 			width: 512, // pixels
 			height: 255, // pixels
-			speed: 12 // pixels/16 millisecs
+			speed: 8 // pixels/16 millisecs
 		};
 
 		function setting(carousel, name, defaultValue) {
@@ -51,6 +51,7 @@
 	function State(carousel) {
 		this.currentFrame = 0;
 		this.progress = 0.0;
+		this.i = 0; // frameIndex
 		this.frameSwitchId = -1;
 	}
 
@@ -78,28 +79,43 @@
 		var blend = scroll;
 
 		function scroll(image0, image1, progress) {
-			canvas.context.drawImage(image0, (-progress*settings.width)/100.0, 0, settings.width, settings.height);
-			canvas.context.drawImage(image1, settings.width - (progress*settings.width)/100.0, 0, settings.width, settings.height);
+			
+			x = progress*settings.width/100.0;
+
+			canvas.context.drawImage(image0, -x, 0, settings.width, settings.height);
+			canvas.context.drawImage(image1, settings.width - x, 0, settings.width, settings.height);
 		}
 
 		function nextFrame(state, settings) {
 			return (state.currentFrame + 1) % settings.images.length;
 		}
 
+		function updateProgress(state, settings) {
+			g = settings.speed/300;
+
+			M = 0.0012;
+			drag = Math.max(M*(-85+state.progress), 0);
+			acc = g - drag;
+			speed = Math.min(settings.speed, acc*state.i);
+			return Math.min(state.progress + speed, 100.0);
+
+		}
+
 		function switchFrame() {
-			console.log("Switching frame for " + canvas.id + " at " + state.progress);
-			state.progress = Math.min(state.progress + settings.speed, 100.0);
+			state.progress = updateProgress(state, settings);
 			blend(settings.images[state.currentFrame], settings.images[nextFrame(state, settings)], state.progress)
 
-			if (state.progress == 100.0) {
+			if (state.progress >= 100.0) {
 				window.clearInterval(state.frameSwitchId);
 				state.currentFrame  = nextFrame(state, settings);
 				state.progress = 0.0;
 			}
+			++state.i;
 		}
 
 		function startSwitchFrame() {
 			interval = 1000 / 60;
+			state.i = 0;
 			state.frameSwitchId = window.setInterval(switchFrame, interval);
 		}
 
