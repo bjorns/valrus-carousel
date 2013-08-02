@@ -2,6 +2,9 @@ div.valrus-carousel {
 	display: block;
 	overflow-x: hidden;
 	position: relative;
+
+	margin: 20px;
+	float: left;
 }
 
 div.valrus-carousel > .settings {

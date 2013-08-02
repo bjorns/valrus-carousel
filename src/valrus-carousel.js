@@ -1,19 +1,13 @@
 (function() {
-	settings = {
-		switchPause: 1000, // millisecs between switch
-		frameWidth: 512, // pixels
-		frameHeight: 255, // pixels
-		speed: 12, // pixels/16 millisecs
-	};
+	function cloneFirstImage(canvas, settings) {
+		var images = canvas.getElementsByClassName('image');
 
-	function cloneFirstImage(carousel, canvas) {
-		images = carousel.getElementsByClassName('image');
-
-		for (i=0; i < images.length; ++i) {
+		for (var i = 0; i < images.length; ++i) {
 			image = images[i];
 			image.id = "image" + i;
-			image.img.height = "" + settings.frameHeight;
-			image.img.width = "" + settings.frameWidth;
+			image.getElementsByTagName('img')[0].height = settings.frameHeight;
+			image.getElementsByTagName('img')[0].width = settings.frameWidth;
+			
 			image.style.height = "" + settings.frameHeight + "px";
 			image.style.left = "" + i*settings.frameWidth + "px";
 		}
@@ -28,73 +22,75 @@
 		}
 	}
 
-	function animate(carousel, canvas) {
-		currentFrame = 0;
-		progress = 0;
-		frameSwitchId = -1;
+	function animate(canvas, state, settings) {
 
-		var shouldStopAnimation = function() {
-			return progress == (currentFrame + 1)*settings.frameWidth;
+		function shouldStopAnimation(state) {
+			return state.progress == (state.currentFrame + 1)*settings.frameWidth;
 		}
 
-		var switchFrame = function() {
-			progress = Math.min(progress + settings.speed, (currentFrame + 1)*settings.frameWidth);
-			canvas.style.marginLeft = "-" + progress + "px";
+		function switchFrame() {
+			state.progress = Math.min(state.progress + settings.speed, (state.currentFrame + 1)*settings.frameWidth);
+			canvas.style.marginLeft = "-" + state.progress + "px";
 
 
-			if (shouldStopAnimation()) {
-				window.clearInterval(frameSwitchId);
+			if (shouldStopAnimation(state)) {
+				window.clearInterval(state.frameSwitchId);
 				
 				size = canvas.getElementsByClassName('image').length;
-				++currentFrame;
-				if (currentFrame == size - 1) {
-					currentFrame = 0;
-					progress = 0;
+				++state.currentFrame;
+				if (state.currentFrame == size - 1) {
+					state.currentFrame = 0;
+					state.progress = 0;
 				}
-
-				waitForAnimation();
 			}
 		}
 		
-		var startSwitchFrame = function() {
+		function startSwitchFrame() {
 			interval = 1000 / 60;
-			frameSwitchId = window.setInterval(switchFrame, interval);
+			state.frameSwitchId = window.setInterval(switchFrame, interval);
 		}
 
-		var waitForAnimation = function() {
-			console.log("Current frame: " + currentFrame);
-			window.setTimeout(startSwitchFrame, settings.switchPause);
-		}
-
-		console.log("Starting animation for " + carousel);
-		waitForAnimation(carousel);
+		
+		window.setInterval(startSwitchFrame, settings.switchPause);
+		console.log("Started animation for " + carousel.id);
 	}
 
-	function setting(carousel, name, defaultValue) {
-		element = carousel.getElementsByClassName(name)[0];
-		if (element != undefined) {
-			value = element.innerHTML;
-			ret = parseInt(value);
-			if (ret == NaN) {
+
+	function Settings(carousel) {
+		var defaults = {
+			switchPause: 5000, // millisecs between switch
+			frameWidth: 512, // pixels
+			frameHeight: 255, // pixels
+			speed: 12 // pixels/16 millisecs
+		};
+
+		function setting(carousel, name, defaultValue) {
+			element = carousel.getElementsByClassName(name)[0];
+			if (element != undefined) {
+				value = element.innerHTML;
+				ret = parseInt(value, 10);
+				if (ret == NaN) {
+					return defaultValue;
+				}
+			} else {
 				return defaultValue;
 			}
-		} else {
-			return defaultValue;
+			return ret;
 		}
-		return ret;
+
+		this.frameWidth = setting(carousel, 'frameWidth', defaults.frameWidth);
+		this.frameHeight = setting(carousel, 'frameHeight', defaults.frameHeight);
+		this.switchPause = setting(carousel, 'switchPause', defaults.switchPause);
+		this.speed = setting(carousel, 'speed', defaults.speed);
 	}
 
-	function readSettings(carousel) {
-		settings.frameWidth = setting(carousel, 'frameWidth', settings.frameWidth);
-		settings.frameHeight = setting(carousel, 'frameHeight', settings.frameHeight);
-		settings.switchPause = setting(carousel, 'switchPause', settings.switchPause);
-		settings.speed = setting(carousel, 'speed', settings.speed);
-
-		return settings;
+	function State(carousel) {
+		this.progress = 0;
+		this.currentFrame = 0;
+		this.frameSwitchId = -1;
 	}
 
-	function bootCarousel(carousel) {
-		settings = readSettings(carousel);
+	function bootCarousel(carousel, settings) {
 		carousel.style.width = "" + settings.frameWidth + "px";
 		carousel.style.height = "" + settings.frameHeight + "px";
 
@@ -102,18 +98,20 @@
 		canvas.style.marginLeft = "0px";
 		canvas.style.height = "" + settings.frameHeight + "px";
 
-		cloneFirstImage(carousel, canvas);
+		cloneFirstImage(canvas, settings);
 
-		animate(carousel, canvas);
+		var state = new State(carousel);
+		animate(canvas, state, settings);
 	}
 
 	function main() {
-		carousels =	document.getElementsByClassName('valrus-carousel')
-		for (i = 0; i < carousels.length; ++i) {
+		carousels =	document.getElementsByClassName('valrus-carousel');
+		for (var i = 0; i < carousels.length; ++i) {
 			carousel = carousels[i];
 			carousel.id = "carousel" + i;
-			console.log("Found carousel: " + carousel);
-			bootCarousel(carousel);
+			console.log("Found carousel [" + i + "/" + carousels.length + "]: " + carousel.id);
+			settings = new Settings(carousel);
+			bootCarousel(carousel, settings);
 		}
 	}
 
