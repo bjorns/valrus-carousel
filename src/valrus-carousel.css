@@ -16,6 +16,10 @@ div.valrus-carousel > .canvas {
 	white-space: nowrap;
 }
 
+div.valrus-carousel > .images {
+	display: none;
+}
+
 div.valrus-carousel .canvas span.image {
 	position: absolute;
 	overflow: hidden;
