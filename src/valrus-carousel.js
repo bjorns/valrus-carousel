@@ -1,4 +1,50 @@
 (function() {
+	/**
+	 * State is the current state of the animation of the carousel.
+	 */
+	function State(carousel) {
+		this.progress = 0;
+		this.currentFrame = 0;
+		this.frameSwitchId = -1;
+	}
+
+	/**
+	 * Settings object contain static settings for a particular 
+	 * carousel, speed, size etc.
+	 */
+	function Settings(carousel) {
+		var defaults = {
+			switchPause: 5000, // millisecs between switch
+			frameWidth: 512, // pixels
+			frameHeight: 255, // pixels
+			speed: 12 // pixels/16 millisecs
+		};
+
+		function setting(carousel, name, defaultValue) {
+			element = carousel.getElementsByClassName(name)[0];
+			if (element != undefined) {
+				value = element.innerHTML;
+				ret = parseInt(value, 10);
+				if (ret == NaN) {
+					return defaultValue;
+				}
+			} else {
+				return defaultValue;
+			}
+			return ret;
+		}
+
+		this.frameWidth = setting(carousel, 'frameWidth', defaults.frameWidth);
+		this.frameHeight = setting(carousel, 'frameHeight', defaults.frameHeight);
+		this.switchPause = setting(carousel, 'switchPause', defaults.switchPause);
+		this.speed = setting(carousel, 'speed', defaults.speed);
+	}
+
+	/**
+	 * In order to not have to animate back to the front we clone the first image
+	 * to the back of the list. This way we can animate to the end and then 
+	 * switch right back to the beginning.
+	 */
 	function cloneFirstImage(canvas, settings) {
 		var images = canvas.getElementsByClassName('image');
 
@@ -22,6 +68,13 @@
 		}
 	}
 
+	/**
+	 * Starts the carousel timers.
+	 * 
+	 * carousel :: Dom node, div.valrus-carusel.
+	 * state    :: CarouselState
+	 * settings :: Settings
+	 */
 	function animate(canvas, state, settings) {
 
 		function shouldStopAnimation(state) {
@@ -56,40 +109,12 @@
 	}
 
 
-	function Settings(carousel) {
-		var defaults = {
-			switchPause: 5000, // millisecs between switch
-			frameWidth: 512, // pixels
-			frameHeight: 255, // pixels
-			speed: 12 // pixels/16 millisecs
-		};
-
-		function setting(carousel, name, defaultValue) {
-			element = carousel.getElementsByClassName(name)[0];
-			if (element != undefined) {
-				value = element.innerHTML;
-				ret = parseInt(value, 10);
-				if (ret == NaN) {
-					return defaultValue;
-				}
-			} else {
-				return defaultValue;
-			}
-			return ret;
-		}
-
-		this.frameWidth = setting(carousel, 'frameWidth', defaults.frameWidth);
-		this.frameHeight = setting(carousel, 'frameHeight', defaults.frameHeight);
-		this.switchPause = setting(carousel, 'switchPause', defaults.switchPause);
-		this.speed = setting(carousel, 'speed', defaults.speed);
-	}
-
-	function State(carousel) {
-		this.progress = 0;
-		this.currentFrame = 0;
-		this.frameSwitchId = -1;
-	}
-
+	/**
+	 * Starts the carousel.
+	 * 
+	 * carousel :: Dom node, div.valrus-carusel.
+	 * settings :: Settings
+	 */
 	function bootCarousel(carousel, settings) {
 		carousel.style.width = "" + settings.frameWidth + "px";
 		carousel.style.height = "" + settings.frameHeight + "px";
