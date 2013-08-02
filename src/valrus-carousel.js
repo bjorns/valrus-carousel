@@ -15,8 +15,8 @@
 	function Settings(carousel) {
 		var defaults = {
 			switchPause: 5000, // millisecs between switch
-			frameWidth: 512, // pixels
-			frameHeight: 255, // pixels
+			width: 512, // pixels
+			height: 255, // pixels
 			speed: 12 // pixels/16 millisecs
 		};
 
@@ -34,8 +34,8 @@
 			return ret;
 		}
 
-		this.frameWidth = setting(carousel, 'frameWidth', defaults.frameWidth);
-		this.frameHeight = setting(carousel, 'frameHeight', defaults.frameHeight);
+		this.width = setting(carousel, 'width', defaults.width);
+		this.height = setting(carousel, 'height', defaults.height);
 		this.switchPause = setting(carousel, 'switchPause', defaults.switchPause);
 		this.speed = setting(carousel, 'speed', defaults.speed);
 	}
@@ -51,19 +51,19 @@
 		for (var i = 0; i < images.length; ++i) {
 			image = images[i];
 			image.id = "image" + i;
-			image.getElementsByTagName('img')[0].height = settings.frameHeight;
-			image.getElementsByTagName('img')[0].width = settings.frameWidth;
+			image.getElementsByTagName('img')[0].height = settings.height;
+			image.getElementsByTagName('img')[0].width = settings.width;
 			
-			image.style.height = "" + settings.frameHeight + "px";
-			image.style.left = "" + i*settings.frameWidth + "px";
+			image.style.height = "" + settings.height + "px";
+			image.style.left = "" + i*settings.width + "px";
 		}
 
 
 		// Copy first node to back
 		if (images.length > 0) {
 			clone = images[0].cloneNode(true);
-			clone.style.left = "" + (images.length*settings.frameWidth) + "px";	
-			canvas.style.width = "" + settings.frameWidth * (images.length + 1) + "px";
+			clone.style.left = "" + (images.length*settings.width) + "px";	
+			canvas.style.width = "" + settings.width * (images.length + 1) + "px";
 			canvas.appendChild(clone);
 		}
 	}
@@ -78,11 +78,11 @@
 	function animate(canvas, state, settings) {
 
 		function shouldStopAnimation(state) {
-			return state.progress == (state.currentFrame + 1)*settings.frameWidth;
+			return state.progress == (state.currentFrame + 1)*settings.width;
 		}
 
 		function switchFrame() {
-			state.progress = Math.min(state.progress + settings.speed, (state.currentFrame + 1)*settings.frameWidth);
+			state.progress = Math.min(state.progress + settings.speed, (state.currentFrame + 1)*settings.width);
 			canvas.style.marginLeft = "-" + state.progress + "px";
 
 
@@ -116,17 +116,17 @@
 	 * settings :: Settings
 	 */
 	function bootCarousel(carousel, settings) {
-		carousel.style.width = "" + settings.frameWidth + "px";
-		carousel.style.height = "" + settings.frameHeight + "px";
+		carousel.style.width = "" + settings.width + "px";
+		carousel.style.height = "" + settings.height + "px";
 
-		canvas = carousel.getElementsByClassName('canvas')[0];
-		canvas.style.marginLeft = "0px";
-		canvas.style.height = "" + settings.frameHeight + "px";
+		images = carousel.getElementsByClassName('images')[0];
+		images.style.marginLeft = "0px";
+		images.style.height = "" + settings.height + "px";
 
-		cloneFirstImage(canvas, settings);
+		cloneFirstImage(images, settings);
 
 		var state = new State(carousel);
-		animate(canvas, state, settings);
+		animate(images, state, settings);
 	}
 
 	function main() {

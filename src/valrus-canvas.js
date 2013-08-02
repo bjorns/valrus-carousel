@@ -57,7 +57,8 @@
 	function Canvas(carousel, settings) {
 		this.settings = settings;
 		var canvas = document.createElement('canvas');
-		canvas.id = "canvas_" + carousel.id;
+		this.id = "canvas_" + carousel.id;
+		canvas.id = this.id;
 		canvas.width = settings.width;
 		canvas.height = settings.height;
 		carousel.appendChild(canvas);
@@ -86,6 +87,7 @@
 		}
 
 		function switchFrame() {
+			console.log("Switching frame for " + canvas.id + " at " + state.progress);
 			state.progress = Math.min(state.progress + settings.speed, 100.0);
 			blend(settings.images[state.currentFrame], settings.images[nextFrame(state, settings)], state.progress)
 
@@ -108,6 +110,7 @@
 	function bootCarousel(carousel, settings) {
 		carousel.style.width = "" + settings.frameWidth + "px";
 		carousel.style.height = "" + settings.frameHeight + "px";
+		carousel.getElementsByClassName("images")[0].style.display = "none";
 
 
 		var canvas = new Canvas(carousel, settings);

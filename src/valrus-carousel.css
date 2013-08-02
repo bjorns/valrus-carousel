@@ -4,20 +4,15 @@ div.valrus-carousel {
 	position: relative;
 
 	margin: 20px;
-	float: left;
 }
 
 div.valrus-carousel > .settings {
 	display: none;
 }
 
-div.valrus-carousel > .canvas {
+div.valrus-carousel > .images {
 	position: absolute;
 	white-space: nowrap;
-}
-
-div.valrus-carousel > .images {
-	display: none;
 }
 
 div.valrus-carousel .canvas span.image {
