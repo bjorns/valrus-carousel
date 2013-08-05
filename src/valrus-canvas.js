@@ -52,10 +52,10 @@
 	 */
 	function ScreenBuffer(carousel, settings) {
 		this.settings = settings;
-		var canvas = createCanvas(settings);
+		this.canvas = createCanvas(settings);
 		this.id = "canvas_" + carousel.id;
-		canvas.id = this.id;
-		carousel.appendChild(canvas);
+		this.canvas.id = this.id;
+		carousel.appendChild(this.canvas);
 		this.context = canvas.getContext("2d");
 
 		var doubleBuffer = createDoubleBuffer(settings);
@@ -84,6 +84,8 @@
 		this.i = 0; // frameIndex
 		this.frameSwitchId = -1;
 		this.switchInProgress = 0;
+		this.drawNavigateLeft = false;
+		this.drawNavigateRight = false;
 	}
 
 	function createCanvas(settings) {
@@ -141,6 +143,9 @@
 			state.progress = updateProgress(state, settings);
 			blend(settings.images[state.currentFrame], settings.images[nextFrame(state, settings)], state.progress)
 
+			navigateLeft(settings, state, screenBuffer);
+			navigateRight(settings, state, screenBuffer);
+
 			if (state.progress >= 100.0) {
 				window.clearInterval(state.frameSwitchId);
 				state.currentFrame  = nextFrame(state, settings);
@@ -175,8 +180,47 @@
 			state.frameSwitchId = window.setInterval(switchFrame, interval);
 		}
 
+		var eventMouseMove = function(mouseEvent) {
+
+			mouseX = mouseEvent.clientX - screenBuffer.canvas.offsetLeft;
+			oldDrawNavigateLeft = state.drawNavigateLeft;
+			state.drawNavigateLeft = mouseX > 0 && mouseX < settings.width/6.0;
+
+			oldDrawNavigateRight = state.drawNavigateRight;
+			mouseY = mouseEvent.clientY - screenBuffer.canvas.offsetTop;
+			state.drawNavigateRight = mouseX < settings.width && mouseX > settings.width - settings.width/6.0;
+			if (state.switchInProgress == 0 && (state.drawNavigateLeft != oldDrawNavigateLeft || state.drawNavigateRight != oldDrawNavigateRight)) {
+				drawBetweenSwitch(settings, state, screenBuffer);
+			}
+		};
+
+		screenBuffer.canvas.addEventListener('mousemove', eventMouseMove);
 		window.setInterval(startSwitchFrame, settings.switchPause);
 		console.log("Started animation for " + carousel.id);
+	}
+
+	function navigateLeft(settings, state, screenBuffer) {
+		if (state.drawNavigateLeft) {
+			screenBuffer.context.fillStyle = "rgba(0, 0, 0, 0.5)";
+			screenBuffer.context.beginPath();
+			screenBuffer.context.rect(0, 0, settings.width/6.0, settings.height);
+			screenBuffer.context.fill();
+		}
+	}
+
+	function navigateRight(settings, state, screenBuffer) {
+		if (state.drawNavigateRight) {
+			screenBuffer.context.fillStyle = "rgba(0, 0, 0, 0.3)";
+			screenBuffer.context.beginPath();
+			screenBuffer.context.rect(settings.width*(1-1/6.0), 0, settings.width, settings.height);
+			screenBuffer.context.fill();
+		}
+	}
+
+	function drawBetweenSwitch(settings, state, screenBuffer) {
+		screenBuffer.context.drawImage(settings.images[state.currentFrame], 0, 0, settings.width, settings.height);
+		navigateLeft(settings, state, screenBuffer);
+		navigateRight(settings, state, screenBuffer);
 	}
 
 	function initCarousel(carousel, settings) {
@@ -186,10 +230,9 @@
 
 
 		var screenBuffer = new ScreenBuffer(carousel, settings);
-		screenBuffer.putImage(settings.images[0].src);
-
 		var state = new State(carousel);
 
+		drawBetweenSwitch(settings, state, screenBuffer);
 		animate(screenBuffer, state, settings)
 	}
 
