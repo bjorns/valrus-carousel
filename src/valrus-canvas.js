@@ -123,7 +123,9 @@
 		this.currentFrame = 0;
 		this.progress = 0.0;
 		this.i = 0; // frameIndex
+		
 		this.switchTimerId = -1;
+		this.animationTimerId = -1;
 		this.switchInProgress = 0;
 
 		function images(images) {
@@ -185,11 +187,19 @@
 		return (this.currentFrame + 1) % this.images.length
 	}
 
+	State.prototype.previousFrame = function () {
+		return (this.currentFrame + this.images.length - 1) % this.images.length
+	}
+
 	/**
 	 * img element of the next image to be displayed.
 	 */
 	State.prototype.nextImage = function () {
 		return this.images[this.nextFrame()];
+	}
+
+	State.prototype.previousImage = function () {
+		return this.images[this.previousFrame()];
 	}
 
 	function animate(settings, state, screenBuffer) {
@@ -244,11 +254,11 @@
 			screenBuffer.renderNavigateRight(state);
 
 			if (state.progress >= 100.0) {
-				window.clearInterval(state.switchTimerId);
+				window.clearInterval(state.animationTimerId);
 				state.currentFrame  = state.nextFrame();
 				state.progress = 0.0;
 
-				console.log("Switch completed for " + state.switchTimerId);
+				console.log("Switch completed for " + state.animationTimerId);
 				--state.switchInProgress;
 			}
 			++state.i;
@@ -261,7 +271,7 @@
 
 		function startSwitchFrame() {
 			if (state.switchInProgress >= 1) {
-				console.log("Skipping switch for " + state.switchTimerId);
+				console.log("Skipping switch for " + state.animationTimerId);
 				return;
 			}
 			++state.switchInProgress;
@@ -270,21 +280,15 @@
 			
 			state.i = 0;
 
-    	    state.source = readData(state.currentImage());
-    	    state.target = readData(state.nextImage());
+			state.source = readData(state.currentImage());
+			state.target = readData(state.nextImage());
 
 			state.result = screenBuffer.context.createImageData(settings.width, settings.height);
-			state.switchTimerId = window.setInterval(switchFrame, 1000 / 60);
+			state.animationTimerId = window.setInterval(switchFrame, 1000 / 60);
 		}
 
 		var eventMouseMove = function(mouseEvent) {
-
-			x = mouseEvent.offsetX;
-
-
-			y = mouseEvent.offsetY;
-
-			redraw = state.updateMouse(x, y);
+			redraw = state.updateMouse(mouseEvent.offsetX, mouseEvent.offsetY);
 
 			if (redraw) {
 				drawBetweenSwitch(settings, state, screenBuffer);
@@ -294,19 +298,46 @@
 		var eventMouseDown = function(mouseEvent) {
 			if (state.showLeftNavigation()) {
 				console.log("Navigate left!");
+				window.clearInterval(state.animationTimerId);
+				window.clearInterval(state.switchTimerId);
+				
+				state.switchInProgress = 1;
+				console.log("Switching frames between " + state.currentFrame + " and " + state.nextFrame());
+
+			
+				state.i = 0;
+
+				state.source = state.result;
+				state.target = readData(state.previousImage());
+
+				state.result = screenBuffer.context.createImageData(settings.width, settings.height);
+				state.animationTimerId = window.setInterval(switchFrame, 1000 / 60);
+				state.switchTimerId = window.setInterval(startSwitchFrame, settings.switchPause);
 			}
 			if (state.showRightNavigation()) {
 				console.log("Navigate right!");
+				window.clearInterval(state.animationTimerId);
 				window.clearInterval(state.switchTimerId);
+				
+				state.switchInProgress = 1;
+				console.log("Switching frames between " + state.currentFrame + " and " + state.nextFrame());
 
+			
+				state.i = 0;
 
-				state.switchTimerId = window.setInterval(switchFrame, 1000 / 60);
+				state.source = state.result;
+				state.target = readData(state.nextImage());
+
+				state.result = screenBuffer.context.createImageData(settings.width, settings.height);
+				state.animationTimerId = window.setInterval(switchFrame, 1000 / 60);
+				state.switchTimerId = window.setInterval(startSwitchFrame, settings.switchPause);
 			}
+
 		}
 
 		screenBuffer.canvas.addEventListener('mousemove', eventMouseMove);
 		screenBuffer.canvas.addEventListener('mousedown', eventMouseDown);
-		window.setInterval(startSwitchFrame, settings.switchPause);
+		state.switchTimerId = window.setInterval(startSwitchFrame, settings.switchPause);
 		console.log("Started animation for " + carousel.id);
 	}
 
