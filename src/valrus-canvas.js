@@ -120,6 +120,7 @@
 	 *
 	 */
 	function State(carousel, settings) {
+
 		this.currentFrame = 0;
 		this.progress = 0.0;
 		this.i = 0; // frameIndex
@@ -127,6 +128,7 @@
 		this.switchTimerId = -1;
 		this.animationTimerId = -1;
 		this.switchInProgress = 0;
+		this.direction = this.Direction.RIGHT;
 
 		function images(images) {
 			ret = [];
@@ -144,7 +146,10 @@
 		this.lastMouse = new Point(-1, -1);
 		this.leftNavigationArea = new Rect(0, 0, settings.width/6.0, settings.height);
 		this.rightNavigationArea = new Rect(settings.width - settings.width/6.0, 0, settings.width, settings.height);
+
 	}
+
+	State.prototype.Direction = { LEFT: 0, RIGHT: 1 };
 
 	State.prototype.showLeftNavigation = function() {
 		return this.leftNavigationArea.contains(this.lastMouse);
@@ -255,11 +260,12 @@
 
 			if (state.progress >= 100.0) {
 				window.clearInterval(state.animationTimerId);
-				state.currentFrame  = state.nextFrame();
+				state.currentFrame  = state.direction == state.Direction.RIGHT ? state.nextFrame():state.previousFrame();
 				state.progress = 0.0;
 
 				console.log("Switch completed for " + state.animationTimerId);
 				--state.switchInProgress;
+				state.direction = state.Direction.RIGHT;
 			}
 			++state.i;
 		}
@@ -305,9 +311,10 @@
 				console.log("Switching frames between " + state.currentFrame + " and " + state.nextFrame());
 
 			
+				state.direction = state.Direction.LEFT;
 				state.i = 0;
 
-				state.source = state.result;
+				state.source = state.result == undefined ? readData(state.currentImage()) : state.result;
 				state.target = readData(state.previousImage());
 
 				state.result = screenBuffer.context.createImageData(settings.width, settings.height);
@@ -325,7 +332,7 @@
 			
 				state.i = 0;
 
-				state.source = state.result;
+				state.source = state.result == undefined ? readData(state.currentImage()) : state.result;
 				state.target = readData(state.nextImage());
 
 				state.result = screenBuffer.context.createImageData(settings.width, settings.height);
@@ -358,9 +365,7 @@
 		var screenBuffer = new ScreenBuffer(carousel, settings);
 		var state = new State(carousel, settings);
 
-		state.currentImage().onload = function() {
-			screenBuffer.context.drawImage(state.currentImage(), 0, 0, settings.width, settings.height);
-		};
+		screenBuffer.context.drawImage(state.currentImage(), 0, 0, settings.width, settings.height);		
 		animate(settings, state, screenBuffer);
 	}
 
