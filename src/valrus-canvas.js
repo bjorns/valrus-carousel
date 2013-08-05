@@ -6,7 +6,7 @@
 
 	Point.prototype.toString = function() {
 		return "[" + this.x + ":" + this.y + "]";
-	}
+	};
 
 	function Rect(x0,y0, x1,y1) {
 		this.x0 = x0;
@@ -21,13 +21,13 @@
 	Rect.prototype.contains = function(point) {
 		return ((point.x >= this.x0 && point.x < this.x1) && 
 			(point.y >= this.y0 && point.y < this.y1));
-	}
-
+	};
 
 
 	Rect.prototype.toString = function() {
 		return "[ " + new Point(this.x0,this.y0) + ":" + new Point(this.x1,this.y1) + " ]";
-	}
+	};
+
 	/**
 	 * Settings object contain static settings for a particular 
 	 * carousel, speed, size etc.
@@ -101,7 +101,7 @@
 			this.context.rect(0, 0, this.settings.width/6.0, this.settings.height);
 			this.context.fill();
 		}
-	}
+	};
 
 	ScreenBuffer.prototype.renderNavigateRight = function(state) {
 		if (state.showRightNavigation()) {
@@ -110,7 +110,7 @@
 			this.context.rect(settings.width*(1-1/6.0), 0, this.settings.width, this.settings.height);
 			this.context.fill();
 		}
-	}
+	};
 
 
 
@@ -153,11 +153,11 @@
 
 	State.prototype.showLeftNavigation = function() {
 		return this.leftNavigationArea.contains(this.lastMouse);
-	}
+	};
 
 	State.prototype.showRightNavigation = function() {
 		return this.rightNavigationArea.contains(this.lastMouse);
-	}
+	};
 	
 	/**
 	 * Returns true if the screen needs to be redrawn because a naviagtion area has changed.
@@ -174,7 +174,7 @@
 		ret = leftNavChanged || rightNavChanged;
 		this.lastMouse = mouse;
 		return ret;
-	}
+	};
 
 	/**
 	 * Img element of the image currently displayed. 
@@ -183,35 +183,34 @@
 	 */
 	State.prototype.currentImage = function () {
 		return this.images[this.currentFrame];
-	}
+	};
 
 	/**
 	 * Integer indicating the index of the next image in the list.
 	 */
 	State.prototype.nextFrame = function () {
-		return (this.currentFrame + 1) % this.images.length
-	}
+		return (this.currentFrame + 1) % this.images.length;
+	};
 
 	State.prototype.previousFrame = function () {
-		return (this.currentFrame + this.images.length - 1) % this.images.length
-	}
+		return (this.currentFrame + this.images.length - 1) % this.images.length;
+	};
 
 	/**
 	 * img element of the next image to be displayed.
 	 */
 	State.prototype.nextImage = function () {
 		return this.images[this.nextFrame()];
-	}
+	};
 
 	State.prototype.previousImage = function () {
 		return this.images[this.previousFrame()];
-	}
+	};
 
 	function animate(settings, state, screenBuffer) {
 		var blend = fade;
 
 		function fade(image0, image1, progress) {
-		    var i, p, q, compl;
 		    
 		    p = state.source.data;
 		    q = state.target.data;
@@ -219,8 +218,8 @@
 		    
 		    r = state.result.data;
 		    translucency = progress/100.0;
-		    opacity = 1.0 - translucency
-		    for (i = 0; i < p.length; i += 1) {
+		    opacity = 1.0 - translucency;
+		    for (var i = 0; i < p.length; i += 1) {
 		        r[i] = p[i] * opacity + q[i] * translucency;
 		    }
 		    screenBuffer.context.putImageData(state.result, 0, 0);
@@ -253,7 +252,7 @@
 		 */
 		function switchFrame() {
 			state.progress = updateProgress(state, settings);
-			blend(state.currentImage(), state.nextImage(), state.progress)
+			blend(state.currentImage(), state.nextImage(), state.progress);
 
 			screenBuffer.renderNavigateLeft(state);
 			screenBuffer.renderNavigateRight(state);
@@ -293,11 +292,11 @@
 			state.animationTimerId = window.setInterval(switchFrame, 1000 / 60);
 		}
 
-		var eventMouseMove = function(mouseEvent) {
+		eventMouseMove = function(mouseEvent) {
 			if (state.switchInProgress > 0) {
 				return;
 			}
-			
+
 			redraw = state.updateMouse(mouseEvent.offsetX, mouseEvent.offsetY);
 
 			if (redraw) {
@@ -305,7 +304,7 @@
 			}
 		};
 
-		var eventMouseDown = function(mouseEvent) {
+		eventMouseDown = function(mouseEvent) {
 			if (state.showLeftNavigation()) {
 				console.log("Navigate left!");
 				window.clearInterval(state.animationTimerId);
@@ -343,8 +342,7 @@
 				state.animationTimerId = window.setInterval(switchFrame, 1000 / 60);
 				state.switchTimerId = window.setInterval(startSwitchFrame, settings.switchPause);
 			}
-
-		}
+		};
 
 		screenBuffer.canvas.addEventListener('mousemove', eventMouseMove);
 		screenBuffer.canvas.addEventListener('mouseout', eventMouseMove);
