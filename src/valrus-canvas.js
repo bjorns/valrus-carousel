@@ -130,6 +130,10 @@
 			return (state.currentFrame + 1) % settings.images.length;
 		}
 
+		/**
+		 * Get a smoother looking animation by using accelaration and breaking.
+		 * 
+		 */
 		function updateProgress(state, settings) {
 			g = settings.speed/300;
 			M = 0.0012;
@@ -139,6 +143,12 @@
 			return Math.min(state.progress + speed, 100.0);
 		}
 
+		/**
+		 * Called with 60fps to switch between images. This method is responsible 
+		 * for calling the blend method and stopping the switch timer when it is
+		 * completed.
+		 * 
+		 */
 		function switchFrame() {
 			state.progress = updateProgress(state, settings);
 			blend(settings.images[state.currentFrame], settings.images[nextFrame(state, settings)], state.progress)
@@ -194,7 +204,20 @@
 			}
 		};
 
+		var eventMouseDown = function(mouseEvent) {
+			if (state.drawNavigateLeft) {
+				console.log("Navigate left!");
+				// stop timer
+				document.clearInterval...
+				
+			}
+			if (state.drawNavigateRight) {
+				console.log("Navigate right!");
+			}
+		}
+
 		screenBuffer.canvas.addEventListener('mousemove', eventMouseMove);
+		screenBuffer.canvas.addEventListener('mousedown', eventMouseDown);
 		window.setInterval(startSwitchFrame, settings.switchPause);
 		console.log("Started animation for " + carousel.id);
 	}
