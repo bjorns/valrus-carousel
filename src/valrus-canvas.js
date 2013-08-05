@@ -294,6 +294,10 @@
 		}
 
 		var eventMouseMove = function(mouseEvent) {
+			if (state.switchInProgress > 0) {
+				return;
+			}
+			
 			redraw = state.updateMouse(mouseEvent.offsetX, mouseEvent.offsetY);
 
 			if (redraw) {
@@ -343,7 +347,10 @@
 		}
 
 		screenBuffer.canvas.addEventListener('mousemove', eventMouseMove);
+		screenBuffer.canvas.addEventListener('mouseout', eventMouseMove);
+		screenBuffer.canvas.addEventListener('mouseover', eventMouseMove);
 		screenBuffer.canvas.addEventListener('mousedown', eventMouseDown);
+		
 		state.switchTimerId = window.setInterval(startSwitchFrame, settings.switchPause);
 		console.log("Started animation for " + carousel.id);
 	}
