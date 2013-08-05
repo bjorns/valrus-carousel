@@ -46,11 +46,44 @@
 
 	}
 
+	/**
+	 * ScreenBuffer represents canvas object and it's scratch buffer.
+	 * 
+	 */
+	function ScreenBuffer(carousel, settings) {
+		this.settings = settings;
+		var canvas = createCanvas(settings);
+		this.id = "canvas_" + carousel.id;
+		canvas.id = this.id;
+		carousel.appendChild(canvas);
+		this.context = canvas.getContext("2d");
+
+		var doubleBuffer = createDoubleBuffer(settings);
+		carousel.appendChild(doubleBuffer);
+		this.scratch = doubleBuffer.getContext('2d');
+
+	}
+
+	ScreenBuffer.prototype.putImage = function(url) {
+		var self = this;
+		var imageObj = new Image();
+	    imageObj.onload = function() {
+   			self.context.drawImage(imageObj, 0, 0, settings.width, settings.height);
+		};
+		imageObj.src = url;
+	}
+
+	/**
+	 * State is the current state of the carousel. 
+	 * On instance is created for each carousel.
+	 *
+	 */
 	function State(carousel) {
 		this.currentFrame = 0;
 		this.progress = 0.0;
 		this.i = 0; // frameIndex
 		this.frameSwitchId = -1;
+		this.switchInProgress = 0;
 	}
 
 	function createCanvas(settings) {
@@ -64,28 +97,6 @@
 		canvas = createCanvas(settings);
 		canvas.style.display = 'none';
 		return canvas;
-	}
-
-	function ScreenBuffer(carousel, settings) {
-		this.settings = settings;
-		var canvas = createCanvas(settings);
-		this.id = "canvas_" + carousel.id;
-		canvas.id = this.id;
-		carousel.appendChild(canvas);
-		this.context = canvas.getContext("2d");
-
-		var doubleBuffer = createDoubleBuffer(settings);
-		carousel.appendChild(doubleBuffer);
-		this.scratch = doubleBuffer.getContext('2d');
-
-		this.putImage = function(url) {
-			var self = this;
-			var imageObj = new Image();
-		    imageObj.onload = function() {
-    			self.context.drawImage(imageObj, 0, 0, settings.width, settings.height);
-			};
-			imageObj.src = url;
-		}
 	}
 
 	function animate(screenBuffer, state, settings) {
@@ -134,6 +145,9 @@
 				window.clearInterval(state.frameSwitchId);
 				state.currentFrame  = nextFrame(state, settings);
 				state.progress = 0.0;
+
+				console.log("Switch completed.");
+				--state.switchInProgress;
 			}
 			++state.i;
 		}
@@ -144,6 +158,11 @@
 		}
 
 		function startSwitchFrame() {
+			if (state.switchInProgress >= 1) {
+				console.log("Skipping switch.");
+				return;
+			}
+			++state.switchInProgress;
 			console.log("Switching frames between " + state.currentFrame + " and " + nextFrame(state, settings));
 
 			interval = 1000 / 60;
@@ -174,7 +193,7 @@
 		animate(screenBuffer, state, settings)
 	}
 
-	function main() {
+	function init() {
 		carousels =	document.getElementsByClassName('valrus-carousel');
 		for (var i = 0; i < carousels.length; ++i) {
 			carousel = carousels[i];
@@ -185,5 +204,5 @@
 		}
 	}
 
-	main();
+	init();
 })();
