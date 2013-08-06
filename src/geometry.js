@@ -1,4 +1,5 @@
 var valrus = valrus || {};
+
 valrus.geometry = valrus.geometry || {};
 valrus.geometry.Point = function(x, y) {
 	this.x = x;

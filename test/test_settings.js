@@ -38,7 +38,7 @@ describe("Settings DOM values", function() {
 		expect(settings.height).toEqual(510);
 	});
     
-	it("SwitchPause", function() {
+	it("Switch Pause", function() {
 		expect(settings.switchPause).toEqual(1234);
 	});
 });
