@@ -370,7 +370,10 @@
 		var screenBuffer = new ScreenBuffer(carousel, settings);
 		var state = new State(carousel, settings);
 
-		screenBuffer.context.drawImage(state.currentImage(), 0, 0, settings.width, settings.height);		
+		state.images[0].onload = function() {
+			screenBuffer.context.drawImage(state.currentImage(), 0, 0, settings.width, settings.height);		
+		}
+
 		animate(settings, state, screenBuffer);
 	}
 
