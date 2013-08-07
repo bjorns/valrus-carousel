@@ -1,5 +1,5 @@
  valrus = valrus || {};
- valrus.blend = valrus.geometry || {};
+ valrus.blend = valrus.blend || {};
 
  valrus.blend.fade = function(settings, state, screenBuffer) {
     p = state.source.data;

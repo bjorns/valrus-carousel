@@ -1,5 +1,4 @@
 valrus.animate = function (settings, state, screenBuffer) {
-	var blend = valrus.blend.fade;
 
 	/**
 	 * Get a smoother looking animation by using accelaration and breaking.
@@ -22,7 +21,7 @@ valrus.animate = function (settings, state, screenBuffer) {
 	 */
 	function switchFrame() {
 		state.progress = updateProgress(state, settings);
-		blend(settings, state, screenBuffer);
+		settings.blend(settings, state, screenBuffer);
 
 		screenBuffer.renderNavigateLeft(state);
 		screenBuffer.renderNavigateRight(state);
