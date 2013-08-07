@@ -109,4 +109,4 @@ valrus.animate = function (settings, state, screenBuffer) {
 	
 	state.switchTimerId = window.setInterval(startSwitchFrame, settings.switchPause);
 	console.log("Started animation for " + carousel.id);
-}
+};

@@ -31,7 +31,7 @@ valrus.State = function(carousel, settings) {
 	this.leftNavigationArea = new valrus.geometry.Rect(0, 0, settings.width/6.0, settings.height);
 	this.rightNavigationArea = new valrus.geometry.Rect(settings.width - settings.width/6.0, 0, settings.width, settings.height);
 
-}
+};
 
 valrus.State.prototype.Direction = { LEFT: 0, RIGHT: 1 };
 
