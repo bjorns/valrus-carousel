@@ -50,7 +50,7 @@ valrus.animate = function (settings, state, screenBuffer) {
 
 		if (state.progress >= 100.0) {
 			window.clearInterval(state.animationTimerId);
-			state.currentFrame  = state.direction == state.Direction.RIGHT ? state.nextFrame():state.previousFrame();
+			state.currentFrame  = state.nextFrame();
 			state.progress = 0.0;
 
 			console.log("Switch completed for " + state.switchTimerId);

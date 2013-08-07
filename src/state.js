@@ -64,15 +64,25 @@ valrus.State.prototype.currentImage = function () {
 	return this.images[this.currentFrame];
 };
 
+
+valrus.State.prototype.incFrame = function (dir) {
+	return (dir == this.Direction.RIGHT) ? 
+		((this.currentFrame + 1) % this.images.length) : 
+		((this.currentFrame + this.images.length - 1) % this.images.length);
+};
+
 /**
  * Integer indicating the index of the next image in the list.
  */
 valrus.State.prototype.nextFrame = function () {
-	return (this.currentFrame + 1) % this.images.length;
+	return this.incFrame(this.direction);
 };
 
 valrus.State.prototype.previousFrame = function () {
-	return (this.currentFrame + this.images.length - 1) % this.images.length;
+	function reverse(dir) {
+		return (dir + 1) % 2;
+	}
+	return this.incFrame(reverse(this.direction));
 };
 
 /**
