@@ -1,5 +1,5 @@
 valrus.animate = function (settings, state, screenBuffer) {
-	var blend = valrus.blend.scroll;
+	var blend = valrus.blend.fade;
 
 	/**
 	 * Get a smoother looking animation by using accelaration and breaking.
@@ -52,8 +52,8 @@ valrus.animate = function (settings, state, screenBuffer) {
 
 		state.source = screenBuffer.imageData(state.previousImage());
 		state.target = screenBuffer.imageData(state.currentImage());
+		state.result = screenBuffer.scratchBuffer();
 
-		state.result = screenBuffer.context.createImageData(settings.width, settings.height);
 		state.animationTimerId = window.setInterval(switchFrame, 1000 / 60);
 	}
 
@@ -94,10 +94,10 @@ valrus.animate = function (settings, state, screenBuffer) {
 		// If the switch is initiated in the middle of an already 
 		// running switch we use the current screen as the source image
 		// which reduces flicker.
-		state.source = state.result == undefined ? screenBuffer.imageData(state.previousImage()) : state.result;
+		state.source = screenBuffer.screenBuffer();
 		state.target = screenBuffer.imageData(state.currentImage());
+		state.result = screenBuffer.scratchBuffer();
 
-		state.result = screenBuffer.context.createImageData(settings.width, settings.height);
 		state.animationTimerId = window.setInterval(switchFrame, 1000 / 60);
 		state.switchTimerId = window.setInterval(startSwitchFrame, settings.switchPause);
 	};

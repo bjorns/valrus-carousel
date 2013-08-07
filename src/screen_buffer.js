@@ -18,7 +18,9 @@ valrus.ScreenBuffer = function(carousel, settings) {
 		return canvas;
 	}
 
-	this.settings = settings;
+	this.width = settings.width;
+	this.height = settings.height;
+
 	this.canvas = createCanvas(settings);
 	this.id = "canvas_" + carousel.id;
 	this.canvas.id = this.id;
@@ -48,13 +50,13 @@ valrus.ScreenBuffer.prototype.shade = function(x0,y0,x1,y1, p) {
 
 valrus.ScreenBuffer.prototype.renderNavigateLeft = function(state) {
 	if (state.showLeftNavigation()) {
-		this.shade(0, 0, this.settings.width/6.0, this.settings.height)
+		this.shade(0, 0, this.width/6.0, this.height)
 	}
 };
 
 valrus.ScreenBuffer.prototype.renderNavigateRight = function(state) {
 	if (state.showRightNavigation()) {
-		this.shade(settings.width*(1-1/6.0), 0, this.settings.width, this.settings.height);
+		this.shade(settings.width*(1-1/6.0), 0, this.width, this.height);
 	}
 };
 
@@ -63,6 +65,17 @@ valrus.ScreenBuffer.prototype.renderNavigateRight = function(state) {
  *       gains.
  */
 valrus.ScreenBuffer.prototype.imageData = function(image) {
-	this.scratch.drawImage(image, 0, 0, this.settings.width, this.settings.height);
-	return this.scratch.getImageData(0, 0, this.settings.width, this.settings.height);
+	this.scratch.drawImage(image, 0, 0, this.width, this.height);
+	return this.scratch.getImageData(0, 0, this.width, this.height);
 }
+
+valrus.ScreenBuffer.prototype.scratchBuffer = function() {
+	if (this.result === undefined) {
+		this.result = this.context.createImageData(this.width, this.height);
+	}
+	return this.result;
+};
+
+valrus.ScreenBuffer.prototype.screenBuffer = function() {
+	return this.context.getImageData(0,0, this.width, this.height)
+};

@@ -9,10 +9,8 @@ valrus.initCarousel = function(carousel, settings) {
 	var screenBuffer = new valrus.ScreenBuffer(carousel, settings);
 	var state = new valrus.State(carousel, settings);
 
-	state.images[0].onload = function() {
-		screenBuffer.context.drawImage(state.currentImage(), 0, 0, settings.width, settings.height);		
-	}
-
+	
+	screenBuffer.context.drawImage(state.images[0], 0, 0, settings.width, settings.height);		
 	valrus.animate(settings, state, screenBuffer);
 }
 
@@ -27,4 +25,13 @@ valrus.init = function() {
 	}
 }
 
-valrus.init();
+if (window.onload != null) {
+	var oldOnLoad = window.onload
+	window.onload = function() {
+		valrus.init();
+		oldOnLoad();
+	}
+} else {
+	window.onload = valrus.init;
+}
+
