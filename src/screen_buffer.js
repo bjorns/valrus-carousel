@@ -31,20 +31,30 @@ valrus.ScreenBuffer = function(carousel, settings) {
 
 }
 
+valrus.ScreenBuffer.prototype.shade = function(x0,y0,x1,y1, p) {
+	this.context.fillStyle = "rgba(0, 0, 0, 0.5)";
+	this.context.beginPath();
+	this.context.rect(x0,y0, x1, y1);
+	this.context.fill();
+}
+
 valrus.ScreenBuffer.prototype.renderNavigateLeft = function(state) {
 	if (state.showLeftNavigation()) {
-		this.context.fillStyle = "rgba(0, 0, 0, 0.5)";
-		this.context.beginPath();
-		this.context.rect(0, 0, this.settings.width/6.0, this.settings.height);
-		this.context.fill();
+		this.shade(0, 0, this.settings.width/6.0, this.settings.height)
 	}
 };
 
 valrus.ScreenBuffer.prototype.renderNavigateRight = function(state) {
 	if (state.showRightNavigation()) {
-		this.context.fillStyle = "rgba(0, 0, 0, 0.5)";
-		this.context.beginPath();
-		this.context.rect(settings.width*(1-1/6.0), 0, this.settings.width, this.settings.height);
-		this.context.fill();
+		this.shade(settings.width*(1-1/6.0), 0, this.settings.width, this.settings.height);
 	}
 };
+
+/**
+ * TODO: This can be cached bu uncertain of need and potential 
+ *       gains.
+ */
+valrus.ScreenBuffer.prototype.imageData = function(image) {
+	this.scratch.drawImage(image, 0, 0, this.settings.width, this.settings.height);
+	return this.scratch.getImageData(0, 0, this.settings.width, this.settings.height);
+}

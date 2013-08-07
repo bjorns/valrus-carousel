@@ -60,11 +60,6 @@ valrus.animate = function (settings, state, screenBuffer) {
 		++state.i;
 	}
 
-	function readData(image) {
-        screenBuffer.scratch.drawImage(image, 0, 0, settings.width, settings.height);
-	    return screenBuffer.scratch.getImageData(0, 0, settings.width, settings.height);
-	}
-
 	function startSwitchFrame() {
 		if (state.switchInProgress >= 1) {
 			console.log("Skipping switch for " + state.animationTimerId);
@@ -76,8 +71,8 @@ valrus.animate = function (settings, state, screenBuffer) {
 		
 		state.i = 0;
 
-		state.source = readData(state.currentImage());
-		state.target = readData(state.nextImage());
+		state.source = screenBuffer.imageData(state.currentImage());
+		state.target = screenBuffer.imageData(state.nextImage());
 
 		state.result = screenBuffer.context.createImageData(settings.width, settings.height);
 		state.animationTimerId = window.setInterval(switchFrame, 1000 / 60);
@@ -110,8 +105,8 @@ valrus.animate = function (settings, state, screenBuffer) {
 			state.direction = state.Direction.LEFT;
 			state.i = 0;
 
-			state.source = state.result == undefined ? readData(state.currentImage()) : state.result;
-			state.target = readData(state.previousImage());
+			state.source = state.result == undefined ? screenBuffer.imageData(state.currentImage()) : state.result;
+			state.target = screenBuffer.imageData(state.previousImage());
 
 			state.result = screenBuffer.context.createImageData(settings.width, settings.height);
 			state.animationTimerId = window.setInterval(switchFrame, 1000 / 60);
@@ -128,8 +123,8 @@ valrus.animate = function (settings, state, screenBuffer) {
 		
 			state.i = 0;
 
-			state.source = state.result == undefined ? readData(state.currentImage()) : state.result;
-			state.target = readData(state.nextImage());
+			state.source = state.result == undefined ? screenBuffer.imageData(state.currentImage()) : state.result;
+			state.target = screenBuffer.imageData(state.nextImage());
 
 			state.result = screenBuffer.context.createImageData(settings.width, settings.height);
 			state.animationTimerId = window.setInterval(switchFrame, 1000 / 60);
