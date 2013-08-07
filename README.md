@@ -6,9 +6,10 @@ in webpages.
 
 Demo
 -----
-To see a demo run serve.sh and point your browser to http://localhost:8080/demo
+To see a demo run serve.sh and point your browser to http://localhost:8080/demo. You 
+can use a file:// url but be aware bacause of security features in Chrome it may cause issues.
 
-You can also use a file:// url but be aware bacause of security features in Chrome it my cause issues.
+There is also one available here http://www.lysator.liu.se/~skoglund/valrus/
 
 Installation
 --------------
