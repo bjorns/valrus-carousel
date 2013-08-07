@@ -1,5 +1,5 @@
 valrus.animate = function (settings, state, screenBuffer) {
-	var blend = valrus.blend.fade;
+	var blend = valrus.blend.scroll;
 
 	/**
 	 * Get a smoother looking animation by using accelaration and breaking.
@@ -22,7 +22,7 @@ valrus.animate = function (settings, state, screenBuffer) {
 	 */
 	function switchFrame() {
 		state.progress = updateProgress(state, settings);
-		blend(state, screenBuffer);
+		blend(settings, state, screenBuffer);
 
 		screenBuffer.renderNavigateLeft(state);
 		screenBuffer.renderNavigateRight(state);
@@ -58,11 +58,11 @@ valrus.animate = function (settings, state, screenBuffer) {
 	}
 
 	eventMouseMove = function(mouseEvent) {
+		redraw = state.updateMouse(mouseEvent.offsetX, mouseEvent.offsetY);
+
 		if (state.switchInProgress > 0) {
 			return;
 		}
-
-		redraw = state.updateMouse(mouseEvent.offsetX, mouseEvent.offsetY);
 
 		if (redraw) {
 			screenBuffer.context.drawImage(state.currentImage(), 0, 0, settings.width, settings.height);
@@ -75,8 +75,10 @@ valrus.animate = function (settings, state, screenBuffer) {
 		if (state.showLeftNavigation()) {
 			state.direction = state.Direction.LEFT;
 			console.log("Navigate left!");
-		} else {
+		} else if (state.showRightNavigation()) {
 			console.log("Navigate right!");
+		} else {
+			return;
 		}
 			
 		window.clearInterval(state.animationTimerId);

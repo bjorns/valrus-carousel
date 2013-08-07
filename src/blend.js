@@ -1,7 +1,7 @@
  valrus = valrus || {};
  valrus.blend = valrus.geometry || {};
 
- valrus.blend.fade = function(state, screenBuffer) {
+ valrus.blend.fade = function(settings, state, screenBuffer) {
     p = state.source.data;
     q = state.target.data;
     r = state.result.data;
@@ -14,9 +14,16 @@
     screenBuffer.context.putImageData(state.result, 0, 0);
 };
 
-valrus.blend.scroll = function(state, screenBuffer) {
-	x = state.progress * state.settings.width/100.0;
-	settings = state.settings;
-	screenBuffer.context.putImageData(state.source.data, -x, 0, settings.width, settings.height);
-	screenBuffer.context.drawImage(state.target.data, settings.width - x, 0, settings.width, settings.height);
+valrus.blend.scroll = function(settings, state, screenBuffer) {
+	var x = state.progress * settings.width/100.0;
+
+	if (state.direction == state.Direction.LEFT) {
+		screenBuffer.context.putImageData(state.source, x, 0);
+		screenBuffer.context.putImageData(state.target, -settings.width + x, 0);
+	} else {
+		screenBuffer.context.putImageData(state.source, -x, 0);
+		screenBuffer.context.putImageData(state.target, settings.width - x, 0);
+	}
+
+	state.result = screenBuffer.context.getImageData(0,0,settings.width, settings.height);
 };
