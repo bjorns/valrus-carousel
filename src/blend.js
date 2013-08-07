@@ -25,3 +25,7 @@ valrus.blend.scroll = function(settings, state, screenBuffer) {
 		screenBuffer.context.putImageData(state.target, settings.width - x, 0);
 	}
 };
+
+valrus.blend.immediate = function(settings, state, screenBuffer) {
+    screenBuffer.context.putImageData(state.target, 0, 0);
+};
