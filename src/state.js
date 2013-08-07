@@ -50,7 +50,7 @@ valrus.State.prototype.updateMouse = function(x, y) {
 	mouse = new valrus.geometry.Point(x, y);
 	leftNavChanged = this.leftNavigationArea.contains(mouse) != this.showLeftNavigation();
 	rightNavChanged = this.rightNavigationArea.contains(mouse) != this.showRightNavigation();
-	ret = leftNavChanged || rightNavChanged;
+	ret = (leftNavChanged || rightNavChanged) && this.switchInProgress === 0;
 	this.lastMouse = mouse;
 	return ret;
 };

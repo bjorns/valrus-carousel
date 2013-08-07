@@ -28,7 +28,15 @@ valrus.ScreenBuffer = function(carousel, settings) {
 	this.doubleBuffer = createDoubleBuffer(settings);
 	carousel.appendChild(this.doubleBuffer);
 	this.scratch = this.doubleBuffer.getContext('2d');
+}
 
+/**
+ * Switch displayed buffer and scratch.
+ */
+valrus.ScreenBuffer.prototype.switch = function() {
+	tmp = this.context;
+	this.context = this.scratch;
+	this.scratch = tmp;
 }
 
 valrus.ScreenBuffer.prototype.shade = function(x0,y0,x1,y1, p) {
