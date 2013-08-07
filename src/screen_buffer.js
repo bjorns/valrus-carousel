@@ -25,9 +25,9 @@ valrus.ScreenBuffer = function(carousel, settings) {
 	carousel.appendChild(this.canvas);
 	this.context = canvas.getContext("2d");
 
-	var doubleBuffer = createDoubleBuffer(settings);
-	carousel.appendChild(doubleBuffer);
-	this.scratch = doubleBuffer.getContext('2d');
+	this.doubleBuffer = createDoubleBuffer(settings);
+	carousel.appendChild(this.doubleBuffer);
+	this.scratch = this.doubleBuffer.getContext('2d');
 
 }
 
@@ -42,7 +42,7 @@ valrus.ScreenBuffer.prototype.renderNavigateLeft = function(state) {
 
 valrus.ScreenBuffer.prototype.renderNavigateRight = function(state) {
 	if (state.showRightNavigation()) {
-		this.context.fillStyle = "rgba(0, 0, 0, 0.3)";
+		this.context.fillStyle = "rgba(0, 0, 0, 0.5)";
 		this.context.beginPath();
 		this.context.rect(settings.width*(1-1/6.0), 0, this.settings.width, this.settings.height);
 		this.context.fill();
