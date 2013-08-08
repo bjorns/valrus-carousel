@@ -26,7 +26,7 @@ valrus.init = function() {
 	}
 };
 
-if (window.onload != null) {
+if (window.onload !== null && window.onload !== undefined) {
 	var oldOnLoad = window.onload;
 	window.onload = function() {
 		valrus.init();

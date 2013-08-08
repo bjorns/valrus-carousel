@@ -28,7 +28,7 @@ valrus.ScreenBuffer = function(carousel, settings) {
 	this.context = canvas.getContext("2d");
 
 	this.overlayCanvas = createCanvas(settings);
-	this.overlayCanvas.className = 'overlay'
+	this.overlayCanvas.className = 'overlay';
 	carousel.appendChild(this.overlayCanvas);
 	this.overlay = this.overlayCanvas.getContext('2d');
 
