@@ -19,8 +19,10 @@ describe("Create ScreenBuffer", function() {
 		h = settings.height;
 		expect(screenBuffer.canvas.width).toEqual(w);
 		expect(screenBuffer.canvas.height).toEqual(h);
-		expect(screenBuffer.doubleBuffer.width).toEqual(w);
-		expect(screenBuffer.doubleBuffer.height).toEqual(h);
+		expect(screenBuffer.scratchCanvas.width).toEqual(w);
+		expect(screenBuffer.scratchCanvas.height).toEqual(h);
+		expect(screenBuffer.overlayCanvas.width).toEqual(w);
+		expect(screenBuffer.overlayCanvas.height).toEqual(h);
 	});
 
 

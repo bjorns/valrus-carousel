@@ -16,7 +16,7 @@ describe("State", function() {
 		expect(state.i).toEqual(0);
 		expect(state.switchTimerId).toEqual(-1);
 		expect(state.animationTimerId).toEqual(-1);
-		expect(state.switchInProgress).toEqual(0);
+		expect(state.switchInProgress).toEqual(false);
 		expect(state.direction).toEqual(state.Direction.RIGHT);
 		expect(state.lastMouse.x).toEqual(-1);
 		expect(state.lastMouse.y).toEqual(-1);

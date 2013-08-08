@@ -28,7 +28,7 @@ valrus.animate = function (settings, state, screenBuffer) {
 
 		if (state.progress >= 100.0) {
 			console.log("Switch completed for " + state.switchTimerId);
-			--state.switchInProgress;
+			state.switchInProgress = false;
 			state.direction = state.Direction.RIGHT;
 			state.setSourceImage(null);
 		} else {
@@ -39,11 +39,11 @@ valrus.animate = function (settings, state, screenBuffer) {
 
 
 	function startSwitchFrame() {
-		if (state.switchInProgress >= 1) {
+		if (state.switchInProgress) {
 			console.log("Skipping switch for " + state.animationTimerId);
 			return;
 		}
-		++state.switchInProgress;
+		state.switchInProgress = true;
 		console.log("Switching frames between " + state.currentFrame + " and " + state.nextFrame());
 
 		
@@ -61,7 +61,7 @@ valrus.animate = function (settings, state, screenBuffer) {
 	eventMouseMove = function(mouseEvent) {
 		redraw = state.updateMouse(mouseEvent.offsetX, mouseEvent.offsetY);
 
-		if (state.switchInProgress > 0) {
+		if (state.switchInProgress) {
 			return;
 		}
 
@@ -82,10 +82,14 @@ valrus.animate = function (settings, state, screenBuffer) {
 			return;
 		}
 			
-		window.clearInterval(state.animationTimerId);
+		if (state.animationTimerId)
+			cancelAnimationFrame(state.animationTimerId);
+
+	
 		window.clearInterval(state.switchTimerId);
+		
 			
-		state.switchInProgress = 1;
+		state.switchInProgress = true;
 		console.log("Switching frames between " + state.currentFrame + " and " + state.nextFrame());
 
 		state.currentFrame = state.nextFrame();

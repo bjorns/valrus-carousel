@@ -11,7 +11,7 @@ valrus.State = function(carousel, settings) {
 	
 	this.switchTimerId = -1;
 	this.animationTimerId = -1;
-	this.switchInProgress = 0;
+	this.switchInProgress = false;
 	this.direction = this.Direction.RIGHT;
 
 	function images(images) {
@@ -51,7 +51,7 @@ valrus.State.prototype.updateMouse = function(x, y) {
 	mouse = new valrus.geometry.Point(x, y);
 	leftNavChanged = this.leftNavigationArea.contains(mouse) != this.showLeftNavigation();
 	rightNavChanged = this.rightNavigationArea.contains(mouse) != this.showRightNavigation();
-	ret = (leftNavChanged || rightNavChanged) && this.switchInProgress === 0;
+	ret = (leftNavChanged || rightNavChanged) && !this.switchInProgress;
 	this.lastMouse = mouse;
 	return ret;
 };
