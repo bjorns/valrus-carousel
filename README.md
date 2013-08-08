@@ -62,6 +62,4 @@ Interesting further work
 ------------------------
 
 * 3D blends
-* More efficient code, there is room to improve memory utility and hardware accelreation in 2D.
-* There are a few bugs in the navigation areas to be fixed.
 * Testing is not covering properly.

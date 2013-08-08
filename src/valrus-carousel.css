@@ -4,6 +4,8 @@ div.valrus-carousel {
 	position: relative;
 
 	margin: 20px;
+	width: 1024px;
+	height: 510;
 }
 
 div.valrus-carousel > .settings {
@@ -15,7 +17,20 @@ div.valrus-carousel > .images {
 	white-space: nowrap;
 }
 
-div.valrus-carousel .canvas span.image {
+div.valrus-carousel .images span.image {
 	position: absolute;
 	overflow: hidden;
+}
+
+div.valrus-carousel .blend {
+	position: absolute;
+	left:0px;
+	top:0px;
+	z-index: -2;
+}
+
+div.valrus-carousel .overlay {
+    left:0px;
+    top:0px;
+    z-index: 3;
 }

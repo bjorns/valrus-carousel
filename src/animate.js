@@ -51,7 +51,7 @@ valrus.animate = function (settings, state, screenBuffer) {
 
 		state.source = screenBuffer.imageData(state.previousImage());
 		state.target = screenBuffer.imageData(state.currentImage());
-		state.result = screenBuffer.scratchBuffer();
+		state.result = screenBuffer.screenBuffer();
 
 		state.animationTimerId = window.setInterval(switchFrame, 1000 / 60);
 	}
@@ -95,16 +95,16 @@ valrus.animate = function (settings, state, screenBuffer) {
 		// which reduces flicker.
 		state.source = screenBuffer.screenBuffer();
 		state.target = screenBuffer.imageData(state.currentImage());
-		state.result = screenBuffer.scratchBuffer();
+		state.result = screenBuffer.screenBuffer();
 
 		state.animationTimerId = window.setInterval(switchFrame, 1000 / 60);
 		state.switchTimerId = window.setInterval(startSwitchFrame, settings.switchPause);
 	};
 
-	screenBuffer.canvas.addEventListener('mousemove', eventMouseMove);
-	screenBuffer.canvas.addEventListener('mouseout', eventMouseMove);
-	screenBuffer.canvas.addEventListener('mouseover', eventMouseMove);
-	screenBuffer.canvas.addEventListener('mousedown', eventMouseDown);
+	screenBuffer.overlayCanvas.addEventListener('mousemove', eventMouseMove);
+	screenBuffer.overlayCanvas.addEventListener('mouseout', eventMouseMove);
+	screenBuffer.overlayCanvas.addEventListener('mouseover', eventMouseMove);
+	screenBuffer.overlayCanvas.addEventListener('mousedown', eventMouseDown);
 	
 	state.switchTimerId = window.setInterval(startSwitchFrame, settings.switchPause);
 	console.log("Started animation for " + carousel.id);

@@ -11,6 +11,7 @@ valrus.initCarousel = function(carousel, settings) {
 
 	
 	screenBuffer.context.drawImage(state.images[0], 0, 0, settings.width, settings.height);		
+	screenBuffer.scratch.drawImage(state.images[0], 0, 0, settings.width, settings.height);		
 	valrus.animate(settings, state, screenBuffer);
 };
 
@@ -25,7 +26,7 @@ valrus.init = function() {
 	}
 };
 
-if (window.onload !== null) {
+if (window.onload != null) {
 	var oldOnLoad = window.onload;
 	window.onload = function() {
 		valrus.init();
