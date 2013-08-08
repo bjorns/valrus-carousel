@@ -16,6 +16,17 @@ valrus.initCarousel = function(carousel, settings) {
 };
 
 valrus.init = function() {
+	window.requestAnimationFrame = (function(callback) {
+    	return window.requestAnimationFrame || 
+    		window.webkitRequestAnimationFrame || 
+    		window.mozRequestAnimationFrame || 
+    		window.oRequestAnimationFrame || 
+    		window.msRequestAnimationFrame ||
+			function(callback) {
+				window.setTimeout(callback, 1000 / 60);
+			};
+	})();
+
 	carousels =	document.getElementsByClassName('valrus-carousel');
 	for (var i = 0; i < carousels.length; ++i) {
 		carousel = carousels[i];
@@ -35,4 +46,3 @@ if (window.onload !== null && window.onload !== undefined) {
 } else {
 	window.onload = valrus.init;
 }
-

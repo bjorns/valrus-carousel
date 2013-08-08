@@ -82,3 +82,10 @@ valrus.ScreenBuffer.prototype.imageData = function(image) {
 valrus.ScreenBuffer.prototype.screenBuffer = function() {
 	return this.context.getImageData(0,0, this.width, this.height);
 };
+
+valrus.ScreenBuffer.prototype.screenImage = function() {
+	var image = new Image();
+	image.src = this.canvas.toDataURL("image/png");
+	return image;
+}
+

@@ -27,10 +27,12 @@ valrus.animate = function (settings, state, screenBuffer) {
 		screenBuffer.renderNavigateRight(state);
 
 		if (state.progress >= 100.0) {
-			window.clearInterval(state.animationTimerId);
 			console.log("Switch completed for " + state.switchTimerId);
 			--state.switchInProgress;
 			state.direction = state.Direction.RIGHT;
+			state.setSourceImage(null);
+		} else {
+			requestAnimationFrame(switchFrame);
 		}
 		++state.i;
 	}
@@ -53,7 +55,7 @@ valrus.animate = function (settings, state, screenBuffer) {
 		state.target = screenBuffer.imageData(state.currentImage());
 		state.result = screenBuffer.screenBuffer();
 
-		state.animationTimerId = window.setInterval(switchFrame, 1000 / 60);
+		state.animationTimerId = requestAnimationFrame(switchFrame);
 	}
 
 	eventMouseMove = function(mouseEvent) {
@@ -93,11 +95,8 @@ valrus.animate = function (settings, state, screenBuffer) {
 		// If the switch is initiated in the middle of an already 
 		// running switch we use the current screen as the source image
 		// which reduces flicker.
-		state.source = screenBuffer.screenBuffer();
-		state.target = screenBuffer.imageData(state.currentImage());
-		state.result = screenBuffer.screenBuffer();
-
-		state.animationTimerId = window.setInterval(switchFrame, 1000 / 60);
+		state.setSourceImage(screenBuffer.screenImage());
+		state.animationTimerId = requestAnimationFrame(switchFrame);
 		state.switchTimerId = window.setInterval(startSwitchFrame, settings.switchPause);
 	};
 

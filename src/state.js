@@ -31,6 +31,7 @@ valrus.State = function(carousel, settings) {
 	this.leftNavigationArea = new valrus.geometry.Rect(0, 0, settings.width/6.0, settings.height);
 	this.rightNavigationArea = new valrus.geometry.Rect(settings.width - settings.width/6.0, 0, settings.width, settings.height);
 
+	this.tempSource = null;
 };
 
 valrus.State.prototype.Direction = { LEFT: 0, RIGHT: 1 };
@@ -95,3 +96,18 @@ valrus.State.prototype.nextImage = function () {
 valrus.State.prototype.previousImage = function () {
 	return this.images[this.previousFrame()];
 };
+
+valrus.State.prototype.sourceImage = function () {
+	if (this.tempSource != null) {
+		return this.tempSource
+	}
+	return this.previousImage();
+};
+
+valrus.State.prototype.setSourceImage = function(img) {
+	this.tempSource = img;
+}
+
+valrus.State.prototype.targetImage = function () {
+	return this.currentImage();
+}
