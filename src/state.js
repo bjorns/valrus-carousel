@@ -98,16 +98,16 @@ valrus.State.prototype.previousImage = function () {
 };
 
 valrus.State.prototype.sourceImage = function () {
-	if (this.tempSource != null) {
-		return this.tempSource
+	if (this.tempSource !== null) {
+		return this.tempSource;
 	}
 	return this.previousImage();
 };
 
 valrus.State.prototype.setSourceImage = function(img) {
 	this.tempSource = img;
-}
+};
 
 valrus.State.prototype.targetImage = function () {
 	return this.currentImage();
-}
+};

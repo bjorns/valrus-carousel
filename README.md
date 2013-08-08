@@ -41,7 +41,7 @@ The carousel responds to the followng settings:
 |width          |numeric|512    |The width in pixels of the canvas element.|
 |height         |numeric|255    |The height in pixels of the canvas element.|
 |switchPause    |numeric|5000   |The time in milliseconds between new switches. Note that if the switch itself takes more than this it will be aborted.|
-|blend          |string |fade   |The blend function. Included options are _scroll_, _fade_ and _immediate_|
+|blend          |string |fade   |The blend function. Included options are _scroll_, _fade_, _cards_ and _immediate_|
 
 
 Adding a blend function

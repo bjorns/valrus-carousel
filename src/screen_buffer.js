@@ -57,14 +57,14 @@ valrus.ScreenBuffer.prototype.clear = function(x0,y0,x1,y1, p) {
 };
 
 valrus.ScreenBuffer.prototype.renderNavigateLeft = function(state) {
-	this.clear(0, 0, this.width/6.0, this.height);
+	this.clear(0, 0, this.width/5.9, this.height);
 	if (state.showLeftNavigation()) {
 		this.shade(0, 0, this.width/6.0, this.height);
 	}
 };
 
 valrus.ScreenBuffer.prototype.renderNavigateRight = function(state) {
-	this.clear(settings.width*(1-1/6.0), 0, this.width, this.height);
+	this.clear(settings.width*(1-1/5.9), 0, this.width, this.height);
 	if (state.showRightNavigation()) {
 		this.shade(settings.width*(1-1/6.0), 0, this.width, this.height);
 	}
@@ -87,5 +87,5 @@ valrus.ScreenBuffer.prototype.screenImage = function() {
 	var image = new Image();
 	image.src = this.canvas.toDataURL("image/png");
 	return image;
-}
+};
 

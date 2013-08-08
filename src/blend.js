@@ -29,6 +29,26 @@ valrus.blend.scroll = function(settings, state, screenBuffer) {
 	}
 };
 
+valrus.blend.cards = function(settings, state, screenBuffer) {
+	var x = state.progress * settings.width/100.0;
+
+	SHADOW_WIDTH = 30;
+
+	if (state.direction == state.Direction.LEFT) {
+		screenBuffer.context.fillStyle = "rgba(0, 0, 0, 0.1)";
+		screenBuffer.context.beginPath();
+		screenBuffer.context.rect(x, 0, SHADOW_WIDTH, screenBuffer.height);
+		screenBuffer.context.fill();		
+		screenBuffer.context.drawImage(state.targetImage(), -screenBuffer.width + x, 0);
+	} else {
+		screenBuffer.context.fillStyle = "rgba(0, 0, 0, 0.1)";
+		screenBuffer.context.beginPath();
+		screenBuffer.context.rect(screenBuffer.width - x - 0.3*(100 - state.progress), 0, SHADOW_WIDTH, screenBuffer.height);
+		screenBuffer.context.fill();
+		screenBuffer.context.drawImage(state.targetImage(), screenBuffer.width - x, 0);
+	}
+};
+
 valrus.blend.immediate = function(settings, state, screenBuffer) {
 	screenBuffer.context.putImageData(state.target, 0, 0);
 };
