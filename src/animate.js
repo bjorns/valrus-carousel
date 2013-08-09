@@ -79,6 +79,7 @@ valrus.animate = function (settings, state, screenBuffer) {
 			console.log("Navigate left!");
 		} else if (state.showRightNavigation()) {
 			console.log("Navigate right!");
+			state.direction = state.Direction.RIGHT;
 		} else {
 			return;
 		}

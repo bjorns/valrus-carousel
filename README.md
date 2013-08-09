@@ -16,11 +16,7 @@ Installation
 To use Valrus you need html to place the carousel and you need to import the javascript file at the bottom
 of the page as follows. 
 
-	<div class="valrus-carousel">
-		<div class="settings">
-			<span class="width">1024</span>
-			<span class="height">510</span>
-		</div>
+	<div class="valrus-carousel" data-width="1024" data-height="510">
 		<div class="images">
 			<span class="image"><img src="carousel0.jpg" /></span>
 			<span class="image"><img src="carousel1.jpg" /></span>
@@ -37,10 +33,10 @@ Requirements
  * Building assumes GNU Make
  * Tests can be run from browser or PhantomJS using Make.
 
-Settings
+Data attributes
 --------
 
-The carousel responds to the followng settings:
+The carousel div responds to the followng data attributes:
 
 |setting        | type  |default|description|
 |---------------|-------|-------|-----------|

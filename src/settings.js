@@ -20,10 +20,9 @@ valrus.Settings = function(carousel) {
 	};
 
 	function stringSetting(carousel, name, defaultValue) {
-		var element = carousel.getElementsByClassName(name)[0];
-		if (element != undefined) {
-			var value = element.innerHTML;
-			return value.toString();
+		var value = carousel.dataset[name];
+		if (value != undefined) {
+			return value;
 		} else {
 			console.log("warning: Failed to locate settings div with class '" + name + 
 				"', returning default value " + defaultValue);
