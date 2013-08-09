@@ -30,6 +30,13 @@ of the page as follows.
 	...
 	<script src="valrus-carousel.min.js"></script>
 
+Requirements
+------------
+
+ * The code is pure JS, no libs required.
+ * Building assumes GNU Make
+ * Tests can be run from browser or PhantomJS using Make.
+
 Settings
 --------
 
