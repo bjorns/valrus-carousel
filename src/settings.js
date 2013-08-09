@@ -52,8 +52,13 @@ valrus.Settings = function(carousel) {
 		return defaults.blend;
 	}
 
-	this.width = intSetting(carousel, 'width', defaults.width);
-	this.height = intSetting(carousel, 'height', defaults.height);
+	var requestedWidth = intSetting(carousel, 'width', defaults.width)
+	var requestedHeight = intSetting(carousel, 'height', defaults.height);
+
+	var ratio = requestedHeight / requestedWidth;
+
+	this.width = Math.min(requestedWidth, carousel.parentNode.clientWidth);
+	this.height = this.width * ratio;
 	this.switchInterval = intSetting(carousel, 'switchInterval', defaults.switchInterval);
 	this.speed = intSetting(carousel, 'speed', defaults.speed);
 	this.blend = blendFunction(stringSetting(carousel, 'blend', 'unknown'));
