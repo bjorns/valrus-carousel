@@ -1,3 +1,4 @@
+"use strict";
 (function() {
 	/**
 	 * State is the current state of the animation of the carousel.

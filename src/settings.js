@@ -1,3 +1,4 @@
+"use strict";
 var valrus = valrus || {};
 
 /**
@@ -19,9 +20,9 @@ valrus.Settings = function(carousel) {
 	};
 
 	function stringSetting(carousel, name, defaultValue) {
-		element = carousel.getElementsByClassName(name)[0];
+		var element = carousel.getElementsByClassName(name)[0];
 		if (element != undefined) {
-			value = element.innerHTML;
+			var value = element.innerHTML;
 			return value.toString();
 		} else {
 			console.log("error: Failed to locate settings div with class '" + name + 
@@ -31,8 +32,8 @@ valrus.Settings = function(carousel) {
 	}
 
 	function intSetting(carousel, name, defaultValue) {
-		value = stringSetting(carousel, name, defaultValue);
-		ret = parseInt(value, 10);
+		var value = stringSetting(carousel, name, defaultValue);
+		var ret = parseInt(value, 10);
 		if (ret == NaN) {
 			console.log("error: Expected parameter " + name + 
             	" to be a number, using default value: " + defaultValue);
@@ -42,7 +43,7 @@ valrus.Settings = function(carousel) {
 	}
 
 	function blendFunction(name) {
-		for (f in valrus.blend) {
+		for (var f in valrus.blend) {
 			if (f === name) {
 				console.log("Using blend function " + f);
 				return window['valrus']['blend'][f];

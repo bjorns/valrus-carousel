@@ -1,3 +1,4 @@
+"use strict";
 var valrus = valrus || {};
 
 valrus.initCarousel = function(carousel, settings) {
@@ -27,12 +28,12 @@ valrus.init = function() {
 			};
 	})();
 
-	carousels =	document.getElementsByClassName('valrus-carousel');
+	var carousels = document.getElementsByClassName('valrus-carousel');
 	for (var i = 0; i < carousels.length; ++i) {
-		carousel = carousels[i];
+		var carousel = carousels[i];
 		carousel.id = "carousel" + i;
 		console.log("Found carousel [" + i + "/" + carousels.length + "]: " + carousel.id);
-		settings = new valrus.Settings(carousel);
+		var settings = new valrus.Settings(carousel);
 		valrus.initCarousel(carousel, settings);
 	}
 };

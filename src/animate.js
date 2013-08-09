@@ -1,3 +1,4 @@
+"use strict";
 valrus.animate = function (settings, state, screenBuffer) {
 
 	/**
@@ -5,11 +6,11 @@ valrus.animate = function (settings, state, screenBuffer) {
 	 * 
 	 */
 	function updateProgress(state, settings) {
-		g = settings.speed/300;
-		M = 0.0012;
-		drag = Math.max(M*(-85+state.progress), 0);
-		acc = g - drag;
-		speed = Math.min(settings.speed, acc*state.i);
+		var g = settings.speed/300;
+		var M = 0.0012;
+		var drag = Math.max(M*(-85+state.progress), 0);
+		var acc = g - drag;
+		var speed = Math.min(settings.speed, acc*state.i);
 		return Math.min(state.progress + speed, 100.0);
 	}
 
@@ -58,8 +59,8 @@ valrus.animate = function (settings, state, screenBuffer) {
 		state.animationTimerId = requestAnimationFrame(switchFrame);
 	}
 
-	eventMouseMove = function(mouseEvent) {
-		redraw = state.updateMouse(mouseEvent.offsetX, mouseEvent.offsetY);
+	var eventMouseMove = function(mouseEvent) {
+		var redraw = state.updateMouse(mouseEvent.offsetX, mouseEvent.offsetY);
 
 		if (state.switchInProgress) {
 			return;
@@ -72,7 +73,7 @@ valrus.animate = function (settings, state, screenBuffer) {
 		}
 	};
 
-	eventMouseDown = function(mouseEvent) {
+	var eventMouseDown = function(mouseEvent) {
 		if (state.showLeftNavigation()) {
 			state.direction = state.Direction.LEFT;
 			console.log("Navigate left!");
@@ -110,5 +111,5 @@ valrus.animate = function (settings, state, screenBuffer) {
 	screenBuffer.overlayCanvas.addEventListener('mousedown', eventMouseDown);
 	
 	state.switchTimerId = window.setInterval(startSwitchFrame, settings.switchPause);
-	console.log("Started animation for " + carousel.id);
+	console.log("Started animation for " + screenBuffer.id);
 };

@@ -1,3 +1,5 @@
+"use strict";
+
 var valrus = valrus || {};
 
 /**
@@ -11,7 +13,7 @@ valrus.ScreenBuffer = function(carousel, settings) {
 	}
 
 	function createCanvas(settings) {
-		canvas = document.createElement('canvas');
+		var canvas = document.createElement('canvas');
 		canvas.width = settings.width;
 		canvas.height = settings.height;
 		return canvas;
@@ -25,7 +27,7 @@ valrus.ScreenBuffer = function(carousel, settings) {
 	this.canvas.id = this.id;
 	this.canvas.className = 'blend';
 	carousel.appendChild(this.canvas);
-	this.context = canvas.getContext("2d");
+	this.context = this.canvas.getContext("2d");
 
 	this.overlayCanvas = createCanvas(settings);
 	this.overlayCanvas.className = 'overlay';
@@ -64,9 +66,9 @@ valrus.ScreenBuffer.prototype.renderNavigateLeft = function(state) {
 };
 
 valrus.ScreenBuffer.prototype.renderNavigateRight = function(state) {
-	this.clear(settings.width*(1-1/5.9), 0, this.width, this.height);
+	this.clear(this.width*(1-1/5.9), 0, this.width, this.height);
 	if (state.showRightNavigation()) {
-		this.shade(settings.width*(1-1/6.0), 0, this.width, this.height);
+		this.shade(this.width*(1-1/6.0), 0, this.width, this.height);
 	}
 };
 

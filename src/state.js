@@ -1,3 +1,4 @@
+"use strict";
 /**
  * State is the current state of the carousel. 
  * On instance is created for each carousel.
@@ -7,7 +8,7 @@ valrus.State = function(carousel, settings) {
 
 	this.currentFrame = 0;
 	this.progress = 0.0;
-	this.i = 0; // frameIndex
+	this.i = 0;
 	
 	this.switchTimerId = -1;
 	this.animationTimerId = -1;
@@ -15,9 +16,9 @@ valrus.State = function(carousel, settings) {
 	this.direction = this.Direction.RIGHT;
 
 	function images(images) {
-		ret = [];
+		var ret = [];
 		for (var i = 0; i < images.length; ++i) {
-			imageDiv = images[i].getElementsByTagName('img')[0];
+			var imageDiv = images[i].getElementsByTagName('img')[0];
 			// TODO: This might not be necessary.
 			ret.push(imageDiv);
 		}
@@ -48,10 +49,10 @@ valrus.State.prototype.showRightNavigation = function() {
  * Returns true if the screen needs to be redrawn because a naviagtion area has changed.
  */
 valrus.State.prototype.updateMouse = function(x, y) {
-	mouse = new valrus.geometry.Point(x, y);
-	leftNavChanged = this.leftNavigationArea.contains(mouse) != this.showLeftNavigation();
-	rightNavChanged = this.rightNavigationArea.contains(mouse) != this.showRightNavigation();
-	ret = (leftNavChanged || rightNavChanged) && !this.switchInProgress;
+	var mouse = new valrus.geometry.Point(x, y);
+	var leftNavChanged = this.leftNavigationArea.contains(mouse) != this.showLeftNavigation();
+	var rightNavChanged = this.rightNavigationArea.contains(mouse) != this.showRightNavigation();
+	var ret = (leftNavChanged || rightNavChanged) && !this.switchInProgress;
 	this.lastMouse = mouse;
 	return ret;
 };

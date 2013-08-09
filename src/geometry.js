@@ -1,3 +1,4 @@
+"use strict";
 var valrus = valrus || {};
 
 valrus.geometry = valrus.geometry || {};
