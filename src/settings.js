@@ -25,7 +25,7 @@ valrus.Settings = function(carousel) {
 			var value = element.innerHTML;
 			return value.toString();
 		} else {
-			console.log("error: Failed to locate settings div with class '" + name + 
+			console.log("warning: Failed to locate settings div with class '" + name + 
 				"', returning default value " + defaultValue);
 			return defaultValue.toString();
 		}
@@ -49,7 +49,7 @@ valrus.Settings = function(carousel) {
 				return window['valrus']['blend'][f];
 			}
 		}
-		console.log("Missing defined blend function, defaulting to scroll");
+		console.log("warning: Missing defined blend function, defaulting to scroll");
 		return defaults.blend;
 	}
 

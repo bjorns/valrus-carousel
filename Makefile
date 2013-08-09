@@ -9,7 +9,7 @@ SRC+=src/valrus-canvas.js
 MIN=$(patsubst src/%.js, bin/%.min.js, $(SRC))
 
 
-all: lint bin/valrus-carousel.min.js
+all: lint test bin/valrus-carousel.min.js
 
 bin:
 	mkdir -p bin
@@ -25,7 +25,11 @@ bin/%.min.js: src/%.js
 lint:
 	jsl -conf jslint.conf -nosummary -nocontext -nofilelisting -nologo
 
+## Currently doesn't give error messages, visit http://localhost:8080/test more more info on failures.
+test:
+	phantomjs lib/phantom-jasmine/run_jasmine_test.coffee test/phantomjs.html > /dev/null
+
 clean:
 	rm -rf bin
 
-.PHONY: all lint
+.PHONY: all lint test clean
