@@ -15,17 +15,18 @@ valrus.State = function(carousel, settings) {
 	this.switchInProgress = false;
 	this.direction = this.Direction.RIGHT;
 
-	function images(images) {
+	function images(carousel) {
 		var ret = [];
+		var images = carousel.getElementsByTagName('img');
 		for (var i = 0; i < images.length; ++i) {
-			var imageDiv = images[i].getElementsByTagName('img')[0];
+			var imageDiv = images[i];
 			// TODO: This might not be necessary.
 			ret.push(imageDiv);
 		}
 		return ret;
 	}
 
-	this.images = images(carousel.getElementsByClassName('image'));
+	this.images = images(carousel);
 
 
 	this.lastMouse = new valrus.geometry.Point(-1, -1);

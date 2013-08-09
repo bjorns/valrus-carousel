@@ -12,7 +12,7 @@ var valrus = valrus || {};
  */
 valrus.Settings = function(carousel) {
 	var defaults = {
-		switchPause: 5000, // millisecs between switch
+		switchInterval: 5000, // millisecs between switch
 		width: 512, // pixels
 		height: 255, // pixels
 		speed: 8, // pixels/16 millisecs
@@ -24,7 +24,7 @@ valrus.Settings = function(carousel) {
 		if (value != undefined) {
 			return value;
 		} else {
-			console.log("warning: Failed to locate settings div with class '" + name + 
+			console.log("warning: Failed to locate data attribute 'data-" + name + 
 				"', returning default value " + defaultValue);
 			return defaultValue.toString();
 		}
@@ -54,7 +54,7 @@ valrus.Settings = function(carousel) {
 
 	this.width = intSetting(carousel, 'width', defaults.width);
 	this.height = intSetting(carousel, 'height', defaults.height);
-	this.switchPause = intSetting(carousel, 'switchPause', defaults.switchPause);
+	this.switchInterval = intSetting(carousel, 'switchInterval', defaults.switchInterval);
 	this.speed = intSetting(carousel, 'speed', defaults.speed);
 	this.blend = blendFunction(stringSetting(carousel, 'blend', 'unknown'));
 };

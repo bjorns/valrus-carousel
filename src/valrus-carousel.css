@@ -8,18 +8,10 @@ div.valrus-carousel {
 	height: 510;
 }
 
-div.valrus-carousel > .settings {
-	display: none;
-}
-
-div.valrus-carousel > .images {
-	position: absolute;
-	white-space: nowrap;
-}
-
-div.valrus-carousel .images span.image {
+div.valrus-carousel img {
 	position: absolute;
 	overflow: hidden;
+	white-space: nowrap;
 }
 
 div.valrus-carousel .blend {

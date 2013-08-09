@@ -19,12 +19,12 @@ describe("Settings default values", function() {
 describe("Settings DOM values", function() {
 	
 
-	carousel = setFixtures('<div class="carousel"><div class="settings">' + 
-		'<span class="speed">10</span>' + 
-		'<span class="width">1024</span>' + 
-		'<span class="height">510</span>' + 
-		'<span class="switchPause">1234</span>' + 
-		'</div></div>')[0];
+	carousel = setFixtures('<div class="valrus-carousel"' + 
+		' data-speed="10"' + 
+		' data-width="1024"' + 
+		' data-height="510"' + 
+		' data-switch-interval="1234"' + 
+		'></div>')[0].getElementsByClassName('valrus-carousel')[0];
 	var settings = new valrus.Settings(carousel);
 	it("Speed", function() {
 		expect(settings.speed).toEqual(10.0);
@@ -39,7 +39,7 @@ describe("Settings DOM values", function() {
 	});
     
 	it("Switch Pause", function() {
-		expect(settings.switchPause).toEqual(1234);
+		expect(settings.switchInterval).toEqual(1234);
 	});
 });
 

@@ -103,7 +103,7 @@ valrus.animate = function (settings, state, screenBuffer) {
 		// which reduces flicker.
 		state.setSourceImage(screenBuffer.screenImage());
 		state.animationTimerId = requestAnimationFrame(switchFrame);
-		state.switchTimerId = window.setInterval(startSwitchFrame, settings.switchPause);
+		state.switchTimerId = window.setInterval(startSwitchFrame, settings.switchInterval);
 	};
 
 	screenBuffer.overlayCanvas.addEventListener('mousemove', eventMouseMove);
@@ -111,6 +111,6 @@ valrus.animate = function (settings, state, screenBuffer) {
 	screenBuffer.overlayCanvas.addEventListener('mouseover', eventMouseMove);
 	screenBuffer.overlayCanvas.addEventListener('mousedown', eventMouseDown);
 	
-	state.switchTimerId = window.setInterval(startSwitchFrame, settings.switchPause);
+	state.switchTimerId = window.setInterval(startSwitchFrame, settings.switchInterval);
 	console.log("Started animation for " + screenBuffer.id);
 };

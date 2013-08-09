@@ -17,11 +17,9 @@ To use Valrus you need html to place the carousel and you need to import the jav
 of the page as follows. 
 
 	<div class="valrus-carousel" data-width="1024" data-height="510">
-		<div class="images">
-			<span class="image"><img src="carousel0.jpg" /></span>
-			<span class="image"><img src="carousel1.jpg" /></span>
-			<span class="image"><img src="carousel2.jpg" /></span>
-		</div>
+		<img src="carousel0.jpg" alt="First image" />
+		<img src="carousel1.jpg" alt="Second image" />
+		<img src="carousel2.jpg" alt="Third image" />
 	</div>
 	...
 	<script src="valrus-carousel.min.js"></script>
@@ -38,13 +36,13 @@ Data attributes
 
 The carousel div responds to the followng data attributes:
 
-|setting        | type  |default|description|
-|---------------|-------|-------|-----------|
-|speed          |numeric|8      |An abstract speed notion, because of some non linear animation there are no had specs on switch times vs. speed|
-|width          |numeric|512    |The width in pixels of the canvas element.|
-|height         |numeric|255    |The height in pixels of the canvas element.|
-|switchPause    |numeric|5000   |The time in milliseconds between new switches. Note that if the switch itself takes more than this it will be aborted.|
-|blend          |string |fade   |The blend function. Included options are _scroll_, _fade_, _cards_ and _immediate_|
+|setting         | type  |default|description|
+|----------------|-------|-------|-----------|
+|speed           |numeric|8      |An abstract speed notion, because of some non linear animation there are no had specs on switch times vs. speed|
+|width           |numeric|512    |The width in pixels of the canvas element.|
+|height          |numeric|255    |The height in pixels of the canvas element.|
+|switch-interval |numeric|5000   |The time in milliseconds between new switches. Note that if the switch itself takes more than this it will be aborted.|
+|blend           |string |fade   |The blend function. Included options are _scroll_, _fade_, _cards_ and _immediate_|
 
 
 Adding a blend function

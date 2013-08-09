@@ -4,7 +4,12 @@ var valrus = valrus || {};
 valrus.initCarousel = function(carousel, settings) {
 	carousel.style.width = "" + settings.frameWidth + "px";
 	carousel.style.height = "" + settings.frameHeight + "px";
-	carousel.getElementsByClassName("images")[0].style.display = "none";
+	
+	var images = carousel.getElementsByTagName("img");
+	for (var i = 0; i < images.length; ++i) {
+		var image = images[i];
+		image.style.display = "none";
+	}
 
 
 	var screenBuffer = new valrus.ScreenBuffer(carousel, settings);
