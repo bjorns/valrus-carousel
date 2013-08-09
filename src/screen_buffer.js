@@ -19,6 +19,22 @@ valrus.ScreenBuffer = function(carousel, settings) {
 		return canvas;
 	}
 
+	function highDef(canvas, context) {
+		if (window.devicePixelRatio) {
+			var defaultWidth = canvas.width;
+			var defaultHeight = canvas.height;
+			var cssWidth = defaultWidth;
+			var cssHeight = defaultHeight;
+
+			canvas.style.width = cssWidth.toString() + "px";
+			canvas.style.height = cssHeight.toString() + "px";
+
+			canvas.width = defaultWidth * window.devicePixelRatio;
+			canvas.height = defaultHeight * window.devicePixelRatio;
+			context.scale(window.devicePixelRatio, window.devicePixelRatio);             
+		}
+	}
+
 	this.width = settings.width;
 	this.height = settings.height;
 
@@ -28,19 +44,20 @@ valrus.ScreenBuffer = function(carousel, settings) {
 	this.canvas.className = 'blend';
 	carousel.appendChild(this.canvas);
 	this.context = this.canvas.getContext("2d");
+	highDef(this.canvas, this.context);
 
 	this.overlayCanvas = createCanvas(settings);
 	this.overlayCanvas.className = 'overlay';
 	carousel.appendChild(this.overlayCanvas);
 	this.overlay = this.overlayCanvas.getContext('2d');
-
+	highDef(this.overlayCanvas, this.overlay);
 	/**
 	 * TODO: Try to remove...
 	 */
 	this.scratchCanvas = invisible(createCanvas(settings));
 	carousel.appendChild(this.scratchCanvas);
 	this.scratch = this.scratchCanvas.getContext('2d');
-
+	highDef(this.scratchCanvas, this.scratch);
 };
 
 /**

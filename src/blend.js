@@ -14,7 +14,7 @@ valrus.blend.fade = function(settings, state, screenBuffer) {
 	screenBuffer.scratch.globalAlpha = opacity;
 	screenBuffer.scratch.drawImage(state.targetImage(), 0, 0, screenBuffer.width, screenBuffer.height);
 
-	screenBuffer.context.drawImage(screenBuffer.scratchCanvas, 0,0);
+	screenBuffer.context.drawImage(screenBuffer.scratchCanvas, 0,0, screenBuffer.width, screenBuffer.height);
 	
 };
 

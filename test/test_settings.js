@@ -19,12 +19,12 @@ describe("Settings default values", function() {
 describe("Settings DOM values", function() {
 	
 
-	carousel = setFixtures('<div class="valrus-carousel"' + 
+	carousel = setFixtures('<body><div class="valrus-carousel"' + 
 		' data-speed="10"' + 
 		' data-width="1024"' + 
 		' data-height="510"' + 
 		' data-switch-interval="1234"' + 
-		'></div>')[0].getElementsByClassName('valrus-carousel')[0];
+		'></div></body>')[0].getElementsByClassName('valrus-carousel')[0];
 	var settings = new valrus.Settings(carousel);
 	it("Speed", function() {
 		expect(settings.speed).toEqual(10.0);

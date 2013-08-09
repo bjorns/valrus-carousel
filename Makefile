@@ -4,7 +4,7 @@ SRC+=src/screen_buffer.js
 SRC+=src/state.js
 SRC+=src/blend.js
 SRC+=src/animate.js
-SRC+=src/valrus-canvas.js
+SRC+=src/init.js
 
 MIN=$(patsubst src/%.js, bin/%.min.js, $(SRC))
 

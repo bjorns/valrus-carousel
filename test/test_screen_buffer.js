@@ -15,8 +15,8 @@ describe("Create ScreenBuffer", function() {
 	});
 
 	it("test canvas size", function() {
-		w = settings.width;
-		h = settings.height;
+		w = settings.width*window.devicePixelRatio;
+		h = settings.height*window.devicePixelRatio;
 		expect(screenBuffer.canvas.width).toEqual(w);
 		expect(screenBuffer.canvas.height).toEqual(h);
 		expect(screenBuffer.scratchCanvas.width).toEqual(w);

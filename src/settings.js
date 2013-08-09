@@ -52,12 +52,20 @@ valrus.Settings = function(carousel) {
 		return defaults.blend;
 	}
 
-	var requestedWidth = intSetting(carousel, 'width', defaults.width)
+	function contextWidth(carousel) {
+		if (carousel.parentNode !== null && carousel.parentNode.clientWidth > 0) {
+			return carousel.parentNode.clientWidth;
+		}
+		return 100000;
+	}
+
+	// Scale down window on narrow placement like on mobile browsers. 
+	var requestedWidth = intSetting(carousel, 'width', defaults.width);
 	var requestedHeight = intSetting(carousel, 'height', defaults.height);
 
 	var ratio = requestedHeight / requestedWidth;
 
-	this.width = Math.min(requestedWidth, carousel.parentNode.clientWidth);
+	this.width = Math.min(requestedWidth, contextWidth(carousel));
 	this.height = this.width * ratio;
 	this.switchInterval = intSetting(carousel, 'switchInterval', defaults.switchInterval);
 	this.speed = intSetting(carousel, 'speed', defaults.speed);
